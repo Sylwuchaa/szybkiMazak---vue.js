@@ -42,6 +42,9 @@
         </div>
     </div>
     <script>
+        // Do localstorage mozesz wrzucic tylko stringa. Zadnej talbicy obiektu czy cos
+        // Jak chcemy obiet albo tablice zrzucic do stringa to robimy JSON.Stringify()
+        // Jak chcemy stringa ktora wyglada jak tablica albo obiekt to robimy JSON.prase()
         var app = new Vue({
             el: '#app',
             data: {
@@ -50,11 +53,15 @@
                     title: '',
                     text: ''
                 },
+                // Sprawdzam czy pole 'notes' w localsotrage istnieje
+                // Jezeli jest to (?) to zrzucamy go do tego jak ten string wyglada 
+                // Jezeli pole notes nie istnieje (:) to notes bedzie pusta tablica
+                // To jest tak zwany short if
                 notes: localStorage.getItem('notes') ? JSON.parse(localStorage.getItem('notes')) : [],   
             },
             methods: {
                 addNote() {
-                    let alreadySavedNotes = localStorage.getItem('notes');
+                    let alreadySavedNotes = localStorage.getItem('notes'); // pobieram pole notes z local storage
                     let { text , title } = this.note
 
                     const note = {
@@ -63,18 +70,20 @@
                         date: new Date(Date.now()).toLocaleString()
                     };
 
-                    if (alreadySavedNotes) {
-                        alreadySavedNotes = JSON.parse(alreadySavedNotes);
-                        alreadySavedNotes.push(note);
+                    if (alreadySavedNotes) { // jezeli istnieje
+                        alreadySavedNotes = JSON.parse(alreadySavedNotes); // przerabian na javascript ze stringa
+                        alreadySavedNotes.push(note); // po przerobieniu dodaje do pola notes nowa notke
                     } else {
-                        alreadySavedNotes = [note];
+                        alreadySavedNotes = [note]; // jezeli pole notes w local sotrage nie istnieje to ta notka jest jako piersza i wrzucam ja do tablciy
                     }
 
-                    localStorage.setItem('notes', JSON.stringify(alreadySavedNotes));
+                    localStorage.setItem('notes', JSON.stringify(alreadySavedNotes)); // nadpisuje pole notes w localstorage nowwa wartoscia ktora przerobilem na stringa
                     this.notes.push(note)
                 },
-                removeNote(title) {
-                    this.notes = _.remove(this.notes, { title });
+                removeNote(title) { // przekazuje tytul
+                    this.notes = _.remove(this.notes, { title }); // funckja remove z lodash, usuwa obiek z tym tytulem i zwraca nowa kolekcje
+                    // google -> lodash -> remove
+                    // lodash (_) to biblioteka do pracy na obiektach
                     alreadySavedNotes = localStorage.getItem('notes');
 
                     if (alreadySavedNotes) {
