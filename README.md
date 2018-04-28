@@ -8,5 +8,5 @@ I will try to add a new functionality and style in the future.
 * v1.1 - add remove card button
 * v1.0 - based version
 
-#livepreview
+# LivePreview
 https://sylwuchaa.github.io/szybkiMazak-vue.js/
